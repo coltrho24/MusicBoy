@@ -1,0 +1,23 @@
+{
+  "name": "musicboy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "colton",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@discordjs/opus": "^0.9.0",
+    "discord-player": "^6.6.8",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "eslint": "^9.3.0"
+  }
+}
