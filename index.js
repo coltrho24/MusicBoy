@@ -1,68 +1,66 @@
-const {Client, GuildMember, Intents, GatewayIntentBits} = require("discord.js");
-const {Player, QueryType} = require("discord-player");
-const config = require("./config.json");
+const {Client, Events, GatewayIntentBits} = require("discord.js");
+//const {Player, QueryType} = require("discord-player");
+const {token} = require("./config.json");
 
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMessages, 
-        GatewayIntentBits.GuildVoiceStates
+        //GatewayIntentBits.GuildMessages, 
+        //GatewayIntentBits.GuildVoiceStates
     ]
 });
-client.login(config.token);
 
-client.once('ready', () => 
-{
-    console.log('Swag, lets fucking go!');
-});
-client.on("error", console.error);
-client.on("warn", console.warn);
-
-const player = new Player(client);
-
-player.on("error", (queue, error) =>
-{
-    console.log('[${queue.guild.name)] Error emitted from the queue: ${error.message}');
+client.once(Events.ClientReady, readyClient => {
+    console.log(`Swag, lets fucking go! ${readyClient.user.tag}`);
 });
 
-player.on("connectionError", (queue, error) => 
-{
-    console.log('[${queue.guild.name}] Error emitted from the connections: ${error.meesage}');
-});
+client.login(token);
 
-player.on("trackStart", (queue, track) =>
-{
-    queue.metadata.send('Playing: **${track.title}**');
-});
+// const player = new Player(client);
 
-player.on("trackAdd", (queue, track) =>
-{
-    queue.metadata.send('Track **${track.title}** queued');
-});
+// player.on("error", (queue, error) =>
+// {
+//     console.log('[${queue.guild.name)] Error emitted from the queue: ${error.message}');
+// });
 
-player.on("botDisconnect", (queue) =>
-{
-    queue.metadata.send("Left Channel");
-});
+// player.on("connectionError", (queue, error) => 
+// {
+//     console.log('[${queue.guild.name}] Error emitted from the connections: ${error.meesage}');
+// });
 
-player.on("queueEnd", (queue) =>
-{
-    queue.metadata.send("Queue ended");
-});
+// player.on("trackStart", (queue, track) =>
+// {
+//     queue.metadata.send('Playing: **${track.title}**');
+// });
 
-client.on('messageCreate', async message => {
-    if (message.author.bot || !message.guild) return;
-    if (!client.application?.owner) await client.application?.fetch();
+// player.on("trackAdd", (queue, track) =>
+// {
+//     queue.metadata.send('Track **${track.title}** queued');
+// });
 
-    if (message.content === '!deploy' && message.author.id === client.application?.owner?.id) {
-        await message.guild.commands
-            .set(client.commands)
-            .then(() => {
-                message.reply('Deployed!');
-            })
-            .catch(err => {
-                message.reply('Could not deploy commands! Make sure the bot has the application.commands permission!');
-                console.error(err);
-            });
-    }
-});
+// player.on("botDisconnect", (queue) =>
+// {
+//     queue.metadata.send("Left Channel");
+// });
+
+// player.on("queueEnd", (queue) =>
+// {
+//     queue.metadata.send("Queue ended");
+// });
+
+// client.on('messageCreate', async message => {
+//     if (message.author.bot || !message.guild) return;
+//     if (!client.application?.owner) await client.application?.fetch();
+
+//     if (message.content === '!deploy' && message.author.id === client.application?.owner?.id) {
+//         await message.guild.commands
+//             .set(client.commands)
+//             .then(() => {
+//                 message.reply('Deployed!');
+//             })
+//             .catch(err => {
+//                 message.reply('Could not deploy commands! Make sure the bot has the application.commands permission!');
+//                 console.error(err);
+//             });
+//     }
+// });
