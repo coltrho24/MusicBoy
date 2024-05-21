@@ -4,7 +4,7 @@ const path = require('path');
 const {REST} = require("@discordjs/rest");
 const {Client, Collection, Events, GatewayIntentBits} = require("discord.js");
 const {Player} = require("discord-player");
-const {token} = require("./config.json");
+//const {token} = require("./config.json");
 
 const client = new Client({
     intents: [ //Sets the intents that I want my bot to use from discord
@@ -13,14 +13,6 @@ const client = new Client({
         GatewayIntentBits.GuildVoiceStates
     ]
 });
-
-//Intialize the discord player
-const defaultConsts = require(`./utils/defaultConsts`);
-const player = new Player(client, {
-    smoothVolume: process.env.SMOOTH_VOLUME,
-    ytdlOptions: defaultConsts.ytdlOptions
-})
-player.extractors.loadDefault();
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -52,4 +44,4 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(token);
+client.login(process.env.TOKEN);
