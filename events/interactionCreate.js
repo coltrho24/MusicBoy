@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Events } = require('discord.js');
 
 module.exports = {

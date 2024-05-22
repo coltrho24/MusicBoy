@@ -26,6 +26,8 @@ player.events.on('playerStart', (queue, track) => {
 	queue.metadata.channel.send(`Started playng ${track.title}`);
 });
 
+client.player = player;
+
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -57,3 +59,5 @@ for (const file of eventFiles) {
 }
 
 client.login(process.env.TOKEN);
+
+module.exports = client;
