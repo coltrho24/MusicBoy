@@ -14,6 +14,18 @@ const client = new Client({
     ]
 });
 
+const player = new Player(client, {
+	ytdlOptions: {
+		quality: 'highestaudio',
+		highWaterMark: 1 << 25
+	}
+});
+player.extractors.loadDefault();
+
+player.events.on('playerStart', (queue, track) => {
+	queue.metadata.channel.send(`Started playng ${track.title}`);
+});
+
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
