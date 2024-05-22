@@ -4,6 +4,7 @@ const path = require('path');
 const {REST} = require("@discordjs/rest");
 const {Client, Collection, Events, GatewayIntentBits} = require("discord.js");
 const {Player} = require("discord-player");
+const { YouTubeExtractor, SpotifyExtractor } = require("@discord-player/extractor");
 //const {token} = require("./config.json");
 
 const client = new Client({
@@ -20,6 +21,8 @@ const player = new Player(client, {
 		highWaterMark: 1 << 25
 	}
 });
+player.extractors.register(YouTubeExtractor);
+player.extractors.register(SpotifyExtractor);
 player.extractors.loadDefault();
 
 player.events.on('playerStart', (queue, track) => {
