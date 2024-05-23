@@ -6,7 +6,7 @@ const { clientId, guildId, token } = require("./config.json");
 	try {
 		console.log(`Started revoking all commands.`);
 		const rest = new REST().setToken(token);
-		await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] });
+		await rest.put(Routes.applicationCommands(clientId), { body: [] });
 		console.log(`Successfully revoked commands.`);
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
