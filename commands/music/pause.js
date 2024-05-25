@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { SlashCommandBuilder, Guild } = require("discord.js");
-const { useMainPlayer, useQueue } = require("discord-player");
+const { useQueue } = require("discord-player");
 
 const pause = new SlashCommandBuilder()
 	.setName("pause")
@@ -9,8 +9,8 @@ const pause = new SlashCommandBuilder()
 module.exports = {
 	data: pause,
 	async execute(interaction) {
+        const queue = useQueue(interaction.guild.id);
 		try {
-            //Read this https://discordjs.guide/slash-commands/response-methods.html#deferred-responses 
 			await interaction.deferReply(); 
 			//adding basic checks before we start playing below
 			if (!interaction.member || !interaction.member.voice.channel) {
@@ -20,7 +20,6 @@ module.exports = {
 				});
 				return;
 			}
-            const queue = useQueue(interaction.guild.id);
             queue.node.setPaused(!queue.node.isPaused());
             await interaction.editReply(`Paused the song!`);
 		} catch (e) {

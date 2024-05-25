@@ -2,12 +2,12 @@ require("dotenv").config();
 const { SlashCommandBuilder, Guild } = require("discord.js");
 const { useQueue } = require("discord-player");
 
-const stop = new SlashCommandBuilder()
-	.setName("stop")
-	.setDescription("Stops the queue!");
+const skip = new SlashCommandBuilder()
+	.setName("skip")
+	.setDescription("Skips the song!");
 
 module.exports = {
-	data: stop,
+	data: skip,
 	async execute(interaction) {
         const queue = useQueue(interaction.guild.id);
 		try {
@@ -20,8 +20,8 @@ module.exports = {
 				});
 				return;
 			}
-            queue.delete();
-            await interaction.editReply(`Stopped the queue`);
+            queue.node.skip();
+            await interaction.editReply(`Skipped the current song`);
 		} catch (e) {
 			return interaction.followUp(`Something went wrong: ${e.message}`);
 		}

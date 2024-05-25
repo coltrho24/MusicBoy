@@ -52,7 +52,7 @@ module.exports = {
 					leaveOnEnd: true,
 					leaveOnEndCooldown: 15000,
 					leaveOnEmpty: true,
-					leaveOnEmptyCooldown: 300000,
+					leaveOnEmptyCooldown: 30000,
 					skipOnNoStream: true,
 				},
 				requestedBy: interaction.user,

@@ -2,14 +2,14 @@ require("dotenv").config();
 const { SlashCommandBuilder, Guild } = require("discord.js");
 const { useQueue } = require("discord-player");
 
-const stop = new SlashCommandBuilder()
-	.setName("stop")
-	.setDescription("Stops the queue!");
+const shuffle = new SlashCommandBuilder()
+	.setName("shuffle")
+	.setDescription("Shuffles the songs");
 
 module.exports = {
-	data: stop,
+	data: shuffle,
 	async execute(interaction) {
-        const queue = useQueue(interaction.guild.id);
+		const queue = useQueue(interaction.guild.id);
 		try {
 			await interaction.deferReply(); 
 			//adding basic checks before we start playing below
@@ -20,8 +20,8 @@ module.exports = {
 				});
 				return;
 			}
-            queue.delete();
-            await interaction.editReply(`Stopped the queue`);
+            queue.tracks.shuffle();
+            await interaction.editReply(`Shuffled the queue/playlist`);
 		} catch (e) {
 			return interaction.followUp(`Something went wrong: ${e.message}`);
 		}
