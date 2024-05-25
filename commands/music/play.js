@@ -4,7 +4,7 @@ const { useMainPlayer, useQueue } = require("discord-player");
 const { Queue } = require("@discord-player/utils");
 const nowplaying = require("./nowplaying");
 
-let counter = 0;
+let counter = 1;
 
 const play = new SlashCommandBuilder()
 	.setName("play")

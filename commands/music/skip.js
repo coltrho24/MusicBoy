@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { SlashCommandBuilder, Guild } = require("discord.js");
 const { useQueue } = require("discord-player");
+const nowplaying = require("./nowplaying");
 
 const skip = new SlashCommandBuilder()
 	.setName("skip")
@@ -22,6 +23,9 @@ module.exports = {
 			}
             queue.node.skip();
             await interaction.editReply(`Skipped the current song`);
+            const tracks = queue.tracks.toArray();
+            const currentTrack = queue.currentTrack;
+            await interaction.followUp(`Now playing ${currentTrack.description}`);
 		} catch (e) {
 			return interaction.followUp(`Something went wrong: ${e.message}`);
 		}
