@@ -1,6 +1,10 @@
 require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
-const { useMainPlayer } = require("discord-player");
+const { useMainPlayer, useQueue } = require("discord-player");
+const { Queue } = require("@discord-player/utils");
+const nowplaying = require("./nowplaying");
+
+let counter = 0;
 
 const play = new SlashCommandBuilder()
 	.setName("play")
@@ -15,6 +19,7 @@ const play = new SlashCommandBuilder()
 module.exports = {
 	data: play,
 	async execute(interaction) {
+        const queue = useQueue(interaction.guild.id);
 		try {
 			await interaction.deferReply();
 			const player = useMainPlayer();
@@ -57,7 +62,8 @@ module.exports = {
 				},
 				requestedBy: interaction.user,
 			});
-            await interaction.editReply(`Added ${searchResult.tracks[0].title} to the queue!`);
+            await interaction.editReply(`Added ${searchResult.tracks[0].description} to the queue at position #${counter}`);
+            counter++;
 		} catch (e) {
 			return interaction.followUp(`Something went wrong: ${e.message}`);
 		}

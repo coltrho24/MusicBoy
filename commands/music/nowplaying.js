@@ -2,12 +2,12 @@ require("dotenv").config();
 const { SlashCommandBuilder, Guild } = require("discord.js");
 const { useQueue } = require("discord-player");
 
-const pause = new SlashCommandBuilder()
-	.setName("pause")
-	.setDescription("Pauses the song");
+const nowplaying = new SlashCommandBuilder()
+	.setName("nowplaying")
+	.setDescription("Shows the title of the current song");
 
 module.exports = {
-	data: pause,
+	data: nowplaying,
 	async execute(interaction) {
         const queue = useQueue(interaction.guild.id);
 		try {
@@ -20,8 +20,9 @@ module.exports = {
 				});
 				return;
 			}
-            queue.node.setPaused(!queue.node.isPaused());
-            await interaction.editReply(`Paused the song`);
+            const tracks = queue.tracks.toArray();
+            const currentTrack = queue.currentTrack;
+            await interaction.editReply(`Now playing ${currentTrack.description}`);
 		} catch (e) {
 			return interaction.followUp(`Something went wrong: ${e.message}`);
 		}
