@@ -1,6 +1,7 @@
 require("dotenv").config();
-const { SlashCommandBuilder, Guild } = require("discord.js");
-const { useQueue } = require("discord-player");
+const { SlashCommandBuilder, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, Guild } = require("discord.js");
+const { useQueue, usePlayer } = require("discord-player");
+const { config } = require("dotenv");
 
 const nowplaying = new SlashCommandBuilder()
 	.setName("nowplaying")
@@ -20,9 +21,42 @@ module.exports = {
 				});
 				return;
 			}
+
+			const butttonLabelList = [
+				{ key: "PlayerQueue", value: "Current Queue", style: ButtonStyle.Primary },
+				{ key: "PlayerPrevious", value: "⏮️ Previous", style: ButtonStyle.Secondary },
+				{ key: "PlayerPause", value: "⏯️ Toggle Pause", style: ButtonStyle.Secondary },
+				{ key: "PlayerSkip", value: "⏭️ Skip", style: ButtonStyle.Secondary },
+				{ key: "PlayerStop", value: "⏹️ Stop", style: ButtonStyle.Danger },
+			];
+
+			const buttonRow = new ActionRowBuilder();
+			for (let i = 0; i < butttonLabelList.length; i++) {
+				buttonRow.addComponents(
+					new ButtonBuilder()
+						.setCustomId(butttonLabelList[i].key)
+						.setLabel(butttonLabelList[i].value)
+						.setStyle(butttonLabelList[i].style),
+				);
+			}
+
             const tracks = queue.tracks.toArray();
             const currentTrack = queue.currentTrack;
-            await interaction.editReply(`Now playing ${currentTrack.description}`);
+			const nowPlayingEmbed = new EmbedBuilder()
+				.setColor(0x6fa8dc)
+				.setTitle("Now Playing")
+				.setAuthor({
+					name: interaction.member.guild.name,
+					iconURL: interaction.guild.iconUrl ? interaction.guild.iconUrl : config.botpfp,
+					url: config.botWebsite,
+				})
+				.setThumbnail(currentTrack.thumbnail)
+				.setDescription(currentTrack.description)
+				.setTimestamp();
+			await interaction.followUp({
+				embeds: [nowPlayingEmbed],
+				components: [buttonRow],
+			});
 		} catch (e) {
 			return interaction.followUp(`Something went wrong: ${e.message}`);
 		}
